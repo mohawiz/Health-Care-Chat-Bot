@@ -1,32 +1,31 @@
-# DoctorChatbot-Backend
-Healthcare Chatbot with Medical PDF Processing
+# 🩺 MediQuery: Healthcare Chatbot with Medical PDF RAG
 
-This project implements a powerful healthcare chatbot that leverages advanced techniques for information retrieval and text-based interaction. It's designed to:
+A production-ready backend for a **Healthcare Chatbot** that leverages **Retrieval-Augmented Generation (RAG)** to provide accurate, context-aware answers from medical literature. It processes PDF documents, creates a searchable knowledge base, and uses a state-of-the-art LLM to generate informative responses about symptoms, treatments, and diseases.
 
-Answer medical-related questions: Users can pose inquiries about various health topics, leveraging the knowledge base within the processed PDF documents.
-Provide informative responses: The chatbot draws upon the extracted content and generates responses that detail symptoms, treatments, and disease descriptions.
-Facilitate specialization-based appointment bookings: While not directly implemented in the provided code, the prompt template leaves room for future development to integrate appointment booking for specific healthcare specializations (dermatologist, cardiologist, etc.).
-Key Functionalities:
+## ✨ Core Features
 
-PDF Processing: Extracts relevant text from medical PDFs using the PyPDFLoader class.
-Text Chunking: Divides the extracted text into manageable chunks using RecursiveCharacterTextSplitter, ensuring efficient processing.
-Embedding Creation: Generates vector representations of the text chunks with the aid of a pre-trained Hugging Face model (sentence-transformers/all-MiniLM-L6-v2).
-Pinecone Integration: Utilizes the Pinecone Vector Database to efficiently store and retrieve these embeddings.
-Prompt Engineering: Defines a custom prompt template using PromptTemplate that guides the large language model (LLM) in generating informative responses.
-RetrievalQA Model: Employs the RetrievalQA chain type to combine information retrieval and question answering capabilities.
-Chat Model Configuration: Initializes a ChatGroq LLM model with the llama3-70b-8192 architecture, suitable for handling complex healthcare data.
-Set up environment variables: Create a .env file and populate it with your API credentials (GROQ API key, Pinecone API key) following the structure shown in the code.
-Customize data path: Modify the data_path variable in the load_pdf function to point to the directory containing your medical PDFs.
-Run the script: Execute the Python script to initiate the chatbot.
-Additional Considerations:
+- **📄 Intelligent PDF Processing**: Automatically loads and extracts text from medical PDFs in a specified directory.
+- **🔍 Semantic Search Engine**: Splits text into optimal chunks and creates vector embeddings using the `all-MiniLM-L6-v2` model for precise information retrieval.
+- **🗃️ Vector Database Management**: Stores and retrieves embeddings efficiently using **Pinecone**, enabling fast similarity search across large document collections.
+- **🤖 Advanced Q&A with RAG**: Combines retrieved medical context with the powerful `llama3-70b-8192` model via **Groq API** to generate factual, cited responses.
+- **⚙️ Customizable Pipeline**: Built with **LangChain** for modularity, allowing easy swaps of models, vector databases, or chunking strategies.
+- **🎯 Specialization-Aware Design**: Prompt template structured to support future integration with specialist appointment booking (e.g., dermatology, cardiology).
 
-This is an illustrative example, and additional development might be necessary to refine the user interface and functionalities.
-For real-world deployment, ensure you have the necessary permissions and agreements to process and store healthcare-related data.
-Further Enhancement Ideas:
+## 🏗️ System Architecture & RAG Pipeline
 
-Explore alternative text chunking strategies to optimize processing efficiency.
-Experiment with different LLM models and fine-tuning techniques to improve response accuracy and relevance.
-Integrate a user-friendly interface for interacting with the chatbot.
-Implement the appointment booking functionality using appropriate APIs or services.
-Consider security and privacy measures for handling sensitive health information.
-By effectively combining document processing, vector embeddings, and a powerful LLM, this project lays the foundation for a valuable healthcare chatbot with the potential to enhance user knowledge and access to medical information.
+```mermaid
+graph TD
+    A[Medical PDFs] --> B[PyPDFLoader];
+    B --> C[Raw Text];
+    C --> D[RecursiveCharacterTextSplitter];
+    D --> E[Text Chunks];
+    E --> F[Embedding Model<br/>all-MiniLM-L6-v2];
+    F --> G[Vector Embeddings];
+    G --> H[Pinecone Vector DB];
+    
+    I[User Query] --> J;
+    H --> J[Semantic Search];
+    J --> K[Top-K Relevant Chunks];
+    K --> L[LLM Prompt + Context];
+    L --> M[ChatGroq LLM<br/>llama3-70b-8192];
+    M --> N[Factual, Context-Rich Answer];
